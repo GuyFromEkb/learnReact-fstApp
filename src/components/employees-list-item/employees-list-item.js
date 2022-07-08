@@ -1,38 +1,75 @@
 import "./employees-list-item.css";
+import { Component } from "react";
 
-const EmployeesListItem = ({ name, salary, increase }) => {
 
-	let className = "list-group-item d-flex justify-content-between";
+class EmployeesListItem extends Component {
 
-	if (increase) {
-		className += ' increase';
+	constructor() {
+		super();
+		this.state = {
+			increase: false,
+			like: false
+		}
+	}
+	setIncrease = () => {
+		this.setState(({ increase }) => ({
+			increase: !increase
+		}))
+	}
+	setLike = () => {
+		this.setState(({ like }) => ({
+			like: !like
+		}))
 	}
 
-	return (
-		<li className={className}>
 
-			<span className="list-group-item-label">{name}</span>
+	render() {
 
-			<input
-				type="text"
-				className="list-group-item-input"
-				defaultValue={salary + "$"}
-			/>
+		const { name, salary } = this.props;
+		const { increase , like} = this.state
 
-			<div className="d-flex justify-content-center align-items-center">
+		let className = "list-group-item d-flex justify-content-between";
 
-				<button type="button" className="btn-cookie btn-sm ">
-					<i className="fas fa-cookie"></i>
-				</button>
+		if (increase) {
+			className += ' increase';
+		}
+		if (like) {
+			className += ' like';
+		}
 
-				<button type="button" className="btn-trash btn-sm ">
-					<i className="fas fa-trash"></i>
-				</button>
-				<i className="fas fa-star"></i>
+		return (
+			<li className={className}>
 
-			</div>
-		</li>
-	);
-};
+				<span onClick={this.setLike} className="list-group-item-label"> {name} </span>
 
-export default EmployeesListItem;
+				<input
+					type="text"
+					className="list-group-item-input"
+					defaultValue={salary + "$"}
+				/>
+
+				<div className="d-flex justify-content-center align-items-center">
+
+					<button
+						onClick={this.setIncrease}
+						type="button"
+						className="btn-cookie btn-sm ">
+
+						<i className="fas fa-cookie"></i>
+					</button>
+
+					<button type="button" className="btn-trash btn-sm ">
+						<i className="fas fa-trash"></i>
+					</button>
+					<i className="fas fa-star"></i>
+
+				</div>
+			</li>
+		)
+	}
+
+
+}
+
+
+export default EmployeesListItem
