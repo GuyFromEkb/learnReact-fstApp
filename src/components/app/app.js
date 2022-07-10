@@ -13,10 +13,12 @@ class App extends Component {
 		super()
 		this.state = {
 			data: [
-				{ name: "Sergey", salary: "3000", id: 1, increase: false, like: true },
-				{ name: "Pasha", salary: "2000", id: 2, increase: true, like: false },
-				{ name: "Sasha", salary: "4000", id: 3, increase: false, like: false },
-			]
+				{ name: "Sergey", salary: "7000", id: 1, increase: false, like: true },
+				{ name: "Pasha", salary: "1800", id: 2, increase: true, like: false },
+				{ name: "Sasha", salary: "900", id: 3, increase: false, like: false },
+			],
+			searchString: "",
+			filter: "all"
 		}
 		this.maxId = 4;
 	}
@@ -75,21 +77,48 @@ class App extends Component {
 
 		}))
 	}
+	onSearch = (string) => {
+		this.setState({ searchString: string })
+	}
+	onFilter = (filterProp) => {
+		this.setState({ filter: filterProp })
+	}
+
+	filter = (filter, data) => {
+
+		switch (filter) {
+
+			case 'like':
+				return data.filter(item => item.like)
+
+			case 'moreThan1000':
+				return data.filter(item => item.salary > 1000)
+
+			default:
+				return data
+		}
+
+	}
+
+
 
 	render() {
-		const { data } = this.state
+		const { data, searchString, filter } = this.state
+
+		const visibleData = data.filter(item => item.name.includes(searchString))
+		const visibleDataAfterFilter = this.filter(filter, visibleData)
 
 		return (
-			<div className="app">
+			<div className="app" >
 				<AppInfo data={data} />
 
 				<div className="search-panel">
-					<SearchPanel data={data} />
-					<AppFilter />
+					<SearchPanel search={this.onSearch} />
+					<AppFilter filterFunc={this.onFilter} filterState={filter} />
 				</div>
 
 				<EmployeesList
-					data={data}
+					data={visibleDataAfterFilter}
 					onIncrase={this.onIncrase}
 					onLike={this.onLike}
 					onDelete={this.onDelete}
