@@ -2,14 +2,19 @@ import EmployeesListItem from "../employees-list-item/employees-list-item";
 
 import "./employees-list.css";
 
-const EmployeesList = ({ data }) => {
+const EmployeesList = ({ data, onDelete, onIncrase, onLike }) => {
 
-    const elements = data.map((item, index) => {
-        // const { id, ...itemProps } = item;
-
+    const elements = data.map(item => {
+        const { id, ...itemProps } = item;
 
         return (
-            <EmployeesListItem key={index} {...item} />
+            <EmployeesListItem
+                key={id}
+                {...itemProps}
+                onDelete={() => { onDelete(id) }}
+                onIncrase={() => { onIncrase(id) }}
+                onLike={() => { onLike(id) }}
+            />
         )
 
     });

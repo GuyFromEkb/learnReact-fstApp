@@ -1,75 +1,53 @@
 import "./employees-list-item.css";
-import { Component } from "react";
 
 
-class EmployeesListItem extends Component {
+function EmployeesListItem(props) {
 
-	constructor() {
-		super();
-		this.state = {
-			increase: false,
-			like: false
-		}
+	const { name, salary, increase, like, onDelete, onIncrase, onLike } = props;
+
+
+	let className = "list-group-item d-flex justify-content-between";
+
+	if (increase) {
+		className += ' increase';
 	}
-	setIncrease = () => {
-		this.setState(({ increase }) => ({
-			increase: !increase
-		}))
-	}
-	setLike = () => {
-		this.setState(({ like }) => ({
-			like: !like
-		}))
+	if (like) {
+		className += ' like';
 	}
 
 
-	render() {
+	return (
+		<li className={className}>
 
-		const { name, salary } = this.props;
-		const { increase , like} = this.state
+			<span onClick={onLike} className="list-group-item-label"> {name} </span>
 
-		let className = "list-group-item d-flex justify-content-between";
+			<input
+				type="text"
+				className="list-group-item-input"
+				defaultValue={salary + "$"}
+			/>
 
-		if (increase) {
-			className += ' increase';
-		}
-		if (like) {
-			className += ' like';
-		}
+			<div className="d-flex justify-content-center align-items-center">
 
-		return (
-			<li className={className}>
+				<button
+					onClick={onIncrase}
+					type="button"
+					className="btn-cookie btn-sm ">
 
-				<span onClick={this.setLike} className="list-group-item-label"> {name} </span>
+					<i className="fas fa-cookie"></i>
+				</button>
 
-				<input
-					type="text"
-					className="list-group-item-input"
-					defaultValue={salary + "$"}
-				/>
+				<button onClick={onDelete} type="button" className="btn-trash btn-sm ">
+					<i className="fas fa-trash"></i>
+				</button>
+				<i className="fas fa-star"></i>
 
-				<div className="d-flex justify-content-center align-items-center">
-
-					<button
-						onClick={this.setIncrease}
-						type="button"
-						className="btn-cookie btn-sm ">
-
-						<i className="fas fa-cookie"></i>
-					</button>
-
-					<button type="button" className="btn-trash btn-sm ">
-						<i className="fas fa-trash"></i>
-					</button>
-					<i className="fas fa-star"></i>
-
-				</div>
-			</li>
-		)
-	}
-
+			</div>
+		</li>
+	)
 
 }
+
 
 
 export default EmployeesListItem
